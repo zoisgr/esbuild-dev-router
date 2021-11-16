@@ -2,7 +2,7 @@
   "name": "esbuild-dev-router",
   "version": "0.0.0",
   "description": "dev router using esbuild",
-  "main": "index.js",
+  "main": "dist/devRouter.js",
   "scripts": {
     "test": "ts-node-dev --respawn test/server",
     "build": "tsc --project src",
