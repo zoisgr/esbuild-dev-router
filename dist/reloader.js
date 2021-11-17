@@ -7,6 +7,6 @@
     });
     ev.addEventListener('reload', function () {
         console.log('RELOADING');
-        window.location = window.location;
+        window.location.reload();
     });
 })();
