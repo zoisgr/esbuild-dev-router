@@ -10,7 +10,7 @@
 
     ev.addEventListener('reload', () => {
         console.log('RELOADING');
-        window.location = window.location;
+        window.location.reload();
     })
 
 
