@@ -9,8 +9,9 @@
     "prepack": "npm run build"
   },
   "keywords": [],
-  "author": "Zois",
-  "license": "ISC",
+  "author": "Zois Parthymos",
+  "license": "Apache License 2.0",
+  "repository": "https://github.com/zoisgr/esbuild-dev-router",
   "devDependencies": {
     "@types/express": "^4.17.13",
     "@types/node": "^16.11.7",
