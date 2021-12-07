@@ -6,12 +6,6 @@ import { readFile } from 'fs/promises';
 
 let reloadScript = '';
 
-readFile(resolve(__dirname,'reloader.js')).then(buff => {
-    reloadScript = '\n\n' + buff;
-});
-
-
-
 export default function devRouter(buildOptions: BuildOptions) {
 
     const app = Router();
@@ -30,7 +24,7 @@ export default function devRouter(buildOptions: BuildOptions) {
         res.flushHeaders();
 
         const reload = () => {
-            console.log('Reloading');
+            // console.log('Reloading');
             res.write('event: reload\ndata: \n\n');
         }
 
@@ -50,11 +44,18 @@ export default function devRouter(buildOptions: BuildOptions) {
     const { outdir = 'dist' } = buildOptions
 
     const storeBuild = (result: BuildResult) => {
+        let totalAssets = 0;
         for (let file of result.outputFiles) {
             const filename = relative(outdir, file.path);
             files[filename] = file.contents;
-            console.log(filename);
+            if (filename.endsWith('.js') || filename.endsWith('.css'))
+                console.log(filename);
+            else
+                totalAssets++;
         }
+        if (totalAssets)
+            console.log('Assets: ', totalAssets)
+
         ev.emit('reload');
     }
 
@@ -72,6 +73,7 @@ export default function devRouter(buildOptions: BuildOptions) {
             '.png': 'file'
         },
         ...buildOptions,
+        inject: [resolve(__dirname, 'reloader.js'), ...buildOptions.inject ?? []],
         write: false,
         watch: {
             onRebuild: (error, result) => {
@@ -90,8 +92,8 @@ export default function devRouter(buildOptions: BuildOptions) {
         if (file) {
             res.type(extension);
             res.write(file);
-            if (extension === '.js')
-                res.write(reloadScript);
+            // if (extension === '.js')
+            //     res.write(reloadScript);
             res.end();
 
         } else {

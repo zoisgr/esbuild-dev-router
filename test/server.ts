@@ -1,5 +1,6 @@
 import express from 'express';
 import devRouter from '../src/devRouter';
+import { resolve } from 'path';
 
 const {
     PORT = '5000'
@@ -11,15 +12,13 @@ app.listen(+PORT, function (this: any) {
     console.log(`Server listening ${address}:${port}`);
 });
 
-// console.log(__dirname);
-// process.exit(0);
 
 app.use(devRouter({
-    entryPoints: [`${__dirname}/web/index.ts`]
+    entryPoints: [resolve(__dirname, 'web/index.ts')]
 }));
 
 
-app.use(express.static(`${__dirname}/public`));
+app.use(express.static(resolve(__dirname, 'public')));
 
 
 
