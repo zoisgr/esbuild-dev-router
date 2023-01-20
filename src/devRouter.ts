@@ -1,10 +1,8 @@
-import { build, BuildOptions, BuildResult } from 'esbuild';
+import { context, BuildOptions, BuildResult } from 'esbuild';
 import { relative, extname, resolve } from 'path';
 import EventEmitter from 'events';
 import { Router } from 'express';
-import { readFile } from 'fs/promises';
 
-let reloadScript = '';
 
 export default function devRouter(buildOptions: BuildOptions) {
 
@@ -60,28 +58,47 @@ export default function devRouter(buildOptions: BuildOptions) {
     }
 
 
+    (async () => {
+        const ctx = await context({
+            bundle: true,
+            color: true,
+            logLevel: 'info',
+            minify: false,
+            sourcemap: 'inline',
+            outdir,
+            target: 'chrome80',
+            loader: {
+                '.png': 'file'
+            },
+            ...buildOptions,
+            inject: [resolve(__dirname, 'reloader.js'), ...buildOptions.inject ?? []],
+            write: false,
+            // watch: {
+            //     onRebuild: (error: any, result: any) => {
+            //         storeBuild(result);
+            //     }
+            // },
+            plugins: [
+                {
+                    name: 'onEnd',
+                    setup(build) {
+                        build.onEnd(result => {
+                            console.log(`build ended with ${result.errors.length} errors`);
+                            storeBuild(result);
+                        })
+                    },
+                }
+            ]
+        })
 
-    build({
-        bundle: true,
-        color: true,
-        logLevel: 'info',
-        minify: false,
-        sourcemap: 'inline',
-        outdir,
-        target: 'chrome80',
-        loader: {
-            '.png': 'file'
-        },
-        ...buildOptions,
-        inject: [resolve(__dirname, 'reloader.js'), ...buildOptions.inject ?? []],
-        write: false,
-        watch: {
-            onRebuild: (error, result) => {
-                storeBuild(result);
-            }
-        },
+        ctx.watch()
 
-    }).then(storeBuild);
+
+    })();
+
+
+
+
 
 
 
@@ -104,3 +121,4 @@ export default function devRouter(buildOptions: BuildOptions) {
     return app;
 
 }
+
