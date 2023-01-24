@@ -1,6 +1,6 @@
 import { context, BuildOptions, BuildResult } from 'esbuild';
 import { relative, extname, resolve } from 'path';
-import EventEmitter from 'events';
+import { EventEmitter } from 'events';
 import { Router } from 'express';
 
 
@@ -73,14 +73,9 @@ export default function devRouter(buildOptions: BuildOptions) {
             ...buildOptions,
             inject: [resolve(__dirname, 'reloader.js'), ...buildOptions.inject ?? []],
             write: false,
-            // watch: {
-            //     onRebuild: (error: any, result: any) => {
-            //         storeBuild(result);
-            //     }
-            // },
             plugins: [
                 {
-                    name: 'onEnd',
+                    name: 'onRebuild',
                     setup(build) {
                         build.onEnd(result => {
                             console.log(`build ended with ${result.errors.length} errors`);
@@ -122,3 +117,5 @@ export default function devRouter(buildOptions: BuildOptions) {
 
 }
 
+// again for packages having trouble with default imports
+export { devRouter }   
