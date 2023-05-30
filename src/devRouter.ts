@@ -74,6 +74,7 @@ export default function devRouter(buildOptions: BuildOptions) {
             inject: [resolve(__dirname, 'reloader.js'), ...buildOptions.inject ?? []],
             write: false,
             plugins: [
+                ...(buildOptions.plugins ?? []),
                 {
                     name: 'onRebuild',
                     setup(build) {
