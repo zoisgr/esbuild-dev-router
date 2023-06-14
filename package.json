@@ -1,10 +1,10 @@
 {
   "name": "esbuild-dev-router",
-  "version": "0.3.2",
+  "version": "0.3.2-test",
   "description": "dev router using esbuild",
   "main": "dist/devRouter.js",
   "scripts": {
-    "test": "node-dev test/server.ts",
+    "test": "tsx watch test/server.ts",
     "prebuild": "rimraf dist",
     "build": "tsc --project src",
     "prepack": "npm run build"
@@ -15,15 +15,14 @@
   "repository": "https://github.com/zoisgr/esbuild-dev-router",
   "devDependencies": {
     "@types/express": "^4.17.13",
-    "@types/node": "^18.11.0",
-    "esbuild-register": "^3.2.0",
+    "@types/node": "^20.3.1",
     "express": "^4.17.1",
-    "node-dev": "^8.0.0",
-    "rimraf": "^4.1.1",
-    "typescript": "^4.4.4"
+    "rimraf": "^5.0.1",
+    "tsx": "^3.12.7",
+    "typescript": "^5.1.3"
   },
   "dependencies": {
-    "esbuild": "^0.17.3"
+    "esbuild": "^0.18.2"
   },
   "files": [
     "dist"

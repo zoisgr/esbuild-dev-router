@@ -66,9 +66,11 @@ export default function devRouter(buildOptions: BuildOptions) {
             minify: false,
             sourcemap: 'inline',
             outdir,
-            target: 'chrome80',
+            target: 'chrome100',
             loader: {
-                '.png': 'file'
+                '.png': 'file',
+                ".jpg": "file",
+                ...(buildOptions.loader ?? {})
             },
             ...buildOptions,
             inject: [resolve(__dirname, 'reloader.js'), ...buildOptions.inject ?? []],
@@ -119,4 +121,4 @@ export default function devRouter(buildOptions: BuildOptions) {
 }
 
 // again for packages having trouble with default imports
-export { devRouter }   
+export { devRouter, BuildOptions }   
