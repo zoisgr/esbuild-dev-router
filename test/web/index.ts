@@ -1,12 +1,25 @@
 import message from './module';
+// Needed only in test mode
+import '../../src/files';
 
 console.log('Hello world');
 
-const el = document.createElement('h1');
+{
+    const el = document.createElement('h1');
 
-el.innerText = message;
+    el.innerText = 'Hello test world';
 
-document.body.appendChild(el);
+    document.body.appendChild(el);
+}
+
+
+{
+    const el = document.createElement('h1');
+
+    el.innerText = message;
+
+    document.body.appendChild(el);
+}
 
 import lanes from './road-lanes.png';
 
