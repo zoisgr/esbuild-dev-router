@@ -1,6 +1,6 @@
 {
   "name": "esbuild-dev-router",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "dev router using esbuild",
   "main": "dist/devRouter.js",
   "scripts": {
