@@ -24,6 +24,9 @@ export default function devRouter(buildOptions: BuildOptions) {
         const reload = () => {
             // console.log('Reloading');
             res.write('event: reload\ndata: \n\n');
+
+            //@ts-ignore Fix for compression, if installed
+            res?.flush();
         }
 
         ev.on('reload', reload);
