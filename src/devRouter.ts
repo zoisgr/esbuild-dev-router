@@ -26,7 +26,7 @@ export default function devRouter(buildOptions: BuildOptions) {
             res.write('event: reload\ndata: \n\n');
 
             //@ts-ignore Fix for compression, if installed
-            res?.flush();
+            res.flush?.();
         }
 
         ev.on('reload', reload);
