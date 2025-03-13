@@ -69,7 +69,7 @@ export default function devRouter(buildOptions: BuildOptions) {
             minify: false,
             sourcemap: 'inline',
             outdir,
-            target: 'chrome100',
+            target: 'es2022',
             loader: {
                 '.png': 'file',
                 ".jpg": "file",
@@ -110,10 +110,7 @@ export default function devRouter(buildOptions: BuildOptions) {
         if (file) {
             res.type(extension);
             res.write(file);
-            // if (extension === '.js')
-            //     res.write(reloadScript);
             res.end();
-
         } else {
             next();
         }
@@ -123,5 +120,5 @@ export default function devRouter(buildOptions: BuildOptions) {
 
 }
 
-// again for packages having trouble with default imports
+// Exporting again for packages having trouble with default imports
 export { devRouter, BuildOptions }   
