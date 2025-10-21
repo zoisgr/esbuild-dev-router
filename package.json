@@ -15,9 +15,9 @@
   "repository": "https://github.com/zoisgr/esbuild-dev-router",
   "devDependencies": {
     "@types/express": "^5.0.0",
-    "@types/node": "^22.7.6",
+    "@types/node": "^24.9.1",
     "esbuild": ">0.17",
-    "express": "^4.17.1",
+    "express": "^5.1.0",
     "rimraf": "^6.0.1",
     "tsx": "^4.7.0",
     "typescript": "^5.1.3"
