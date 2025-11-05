@@ -45,6 +45,11 @@ export default function devRouter(buildOptions: BuildOptions) {
     const { outdir = 'dist' } = buildOptions
 
     const storeBuild = (result: BuildResult) => {
+        // Clear old files to prevent memory leak when filenames change
+        for (const key in files) {
+            delete files[key];
+        }
+
         let totalAssets = 0;
         for (let file of result.outputFiles) {
             const filename = relative(outdir, file.path);
