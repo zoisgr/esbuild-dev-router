@@ -62,39 +62,50 @@ export default function devRouter(buildOptions: BuildOptions) {
 
 
     (async () => {
-        const ctx = await context({
-            bundle: true,
-            color: true,
-            logLevel: 'info',
-            minify: false,
-            sourcemap: 'inline',
-            outdir,
-            target: 'es2022',
-            loader: {
-                '.png': 'file',
-                ".jpg": "file",
-                ...(buildOptions.loader ?? {})
-            },
-            ...buildOptions,
-            inject: [resolve(__dirname, 'reloader.js'), ...buildOptions.inject ?? []],
-            write: false,
-            plugins: [
-                ...(buildOptions.plugins ?? []),
-                {
-                    name: 'onRebuild',
-                    setup(build) {
-                        build.onEnd(result => {
-                            console.log(`build ended with ${result.errors.length} errors`);
-                            storeBuild(result);
-                        })
-                    },
-                }
-            ]
-        })
+        try {
+            const ctx = await context({
+                bundle: true,
+                color: true,
+                logLevel: 'info',
+                minify: false,
+                sourcemap: 'inline',
+                outdir,
+                target: 'es2022',
+                loader: {
+                    '.png': 'file',
+                    ".jpg": "file",
+                    ...(buildOptions.loader ?? {})
+                },
+                ...buildOptions,
+                inject: [resolve(__dirname, 'reloader.js'), ...buildOptions.inject ?? []],
+                write: false,
+                plugins: [
+                    ...(buildOptions.plugins ?? []),
+                    {
+                        name: 'onRebuild',
+                        setup(build) {
+                            build.onEnd(result => {
+                                if (result.errors.length > 0) {
+                                    console.error(`Build failed with ${result.errors.length} error(s):`);
+                                    result.errors.forEach(error => {
+                                        console.error(error);
+                                    });
+                                } else {
+                                    console.log('Build succeeded');
+                                }
+                                storeBuild(result);
+                            })
+                        },
+                    }
+                ]
+            })
 
-        ctx.watch()
+            await ctx.watch()
 
-
+        } catch (error) {
+            console.error('Failed to initialize esbuild context:', error);
+            throw error;
+        }
     })();
 
 
